@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './App.css';
 
-function App() {
-  const [value, setValue] = useState('');
 
-  function textInConsole(){
-    console.log("text is comming here")
-  }
+
+function App() {
+  const [text, setText] = useState('');
+
+  const textInConsole = useCallback(() => {
+    // console.log(text);
+    console.log(document.getElementsByClassName('ql-editor')[0].innerText)
+  }, []);
+
+  const EditorToolbar = () => (
+    <div id="toolbar">
+      <button onClick={textInConsole}>
+        Save
+      </button>
+    </div>
+  );
 
   return (
     <div className="App">
@@ -16,11 +27,9 @@ function App() {
         <p>
           The editor
         </p>
-        <button onClick={textInConsole}>
-          Save
-        </button>
       </header>
-      <ReactQuill theme="snow" value={value} onChange={setValue} />
+      <EditorToolbar/>
+      <ReactQuill theme="snow" value={text} onChange={(value) => setText(value)} />
     </div>
   );
 }
